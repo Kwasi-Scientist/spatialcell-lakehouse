@@ -1,0 +1,124 @@
+# ==========================================
+# SpatialCell Lakehouse .gitignore
+# ==========================================
+
+# -----------------------------
+# Raw and processed data
+# -----------------------------
+data/bronze/*
+data/silver/*
+data/gold/*
+
+# Preserve empty data directories
+!data/bronze/.gitkeep
+!data/silver/.gitkeep
+!data/gold/.gitkeep
+
+# -----------------------------
+# Reports and generated outputs
+# -----------------------------
+reports/*
+!reports/.gitkeep
+
+# -----------------------------
+# Bioinformatics data formats
+# -----------------------------
+*.h5ad
+*.h5
+*.hdf5
+*.loom
+*.mtx
+*.mtx.gz
+
+# -----------------------------
+# Columnar and tabular outputs
+# -----------------------------
+*.parquet
+*.feather
+*.arrow
+
+# -----------------------------
+# Large compressed archives
+# -----------------------------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+
+# -----------------------------
+# Python environments and cache
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+
+# -----------------------------
+# Packaging and build artifacts
+# -----------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# -----------------------------
+# Testing and coverage
+# -----------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# -----------------------------
+# Jupyter and Colab
+# -----------------------------
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# -----------------------------
+# Airflow runtime files
+# -----------------------------
+airflow.db
+airflow.cfg
+airflow-webserver.pid
+logs/
+standalone_admin_password.txt
+
+# -----------------------------
+# Spark runtime files
+# -----------------------------
+metastore_db/
+derby.log
+spark-warehouse/
+
+# -----------------------------
+# Environment variables and secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# -----------------------------
+# IDE and editor files
+# -----------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -----------------------------
+# Operating system files
+# -----------------------------
+.DS_Store
+Thumbs.db
