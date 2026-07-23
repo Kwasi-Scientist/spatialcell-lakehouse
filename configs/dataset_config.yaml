@@ -1,0 +1,90 @@
+# SpatialCell Lakehouse dataset and pipeline configuration
+
+project:
+  name: spatialcell-lakehouse
+  environment: development
+
+dataset:
+  name: human_liver_visium
+  description: Human liver Visium spatial transcriptomics dataset
+  organism: Homo sapiens
+  tissue: liver
+  assay: Visium Spatial Gene Expression
+
+  # Replace this value with the selected CELLxGENE dataset identifier.
+  cellxgene_dataset_id: "a0805e92-3d1f-4866-af5c-5b903c6d910b"
+
+  # Filename of the downloaded H5AD file inside data/bronze/.
+  h5ad_filename: liver_visium_a0805e92.h5ad
+
+paths:
+  # All paths are resolved relative to the repository root by src/config.py.
+  bronze: data/bronze
+  silver: data/silver
+  gold: data/gold
+  reports: reports
+
+anndata:
+  # AnnData matrix containing the expression values.
+  expression_source: X
+
+  # Column in adata.var containing human-readable gene symbols.
+  gene_symbol_column: feature_name
+
+  # Column created to preserve the original Ensembl identifiers.
+  ensembl_id_column: ensembl_id
+
+  # Key in adata.obsm containing Visium spatial coordinates.
+  spatial_coordinates_key: spatial
+
+  # Name used for the observation index after reset_index().
+  observation_id_column: spot_id
+
+extraction:
+  # Restrict the first pipeline version to curated marker genes.
+  mode: marker_panel
+
+  # Use both the general and specific cell-type marker dictionaries.
+  include_general_markers: true
+  include_specific_markers: true
+
+  # Remove repeated marker genes when combining marker dictionaries.
+  deduplicate_markers: true
+
+  # Retain only genes found in adata.var_names.
+  filter_unavailable_markers: true
+
+  # Preserve the sparse matrix representation during extraction.
+  preserve_sparse_matrix: true
+
+  # Store only nonzero expression values in the long-format table.
+  write_nonzero_expression_only: true
+
+outputs:
+  format: parquet
+  compression: snappy
+
+  silver_tables:
+    observations: obs.parquet
+    variables: var.parquet
+    spatial_coordinates: spatial_coordinates.parquet
+    marker_expression: marker_expression_long.parquet
+    marker_audit: marker_audit.parquet
+
+  gold_tables:
+    marker_expression_summary: marker_expression_summary.parquet
+    compartment_scores: spot_compartment_scores.parquet
+    pipeline_metrics: pipeline_run_metrics.parquet
+
+validation:
+  require_unique_observation_ids: true
+  require_unique_variable_names: true
+  require_spatial_coordinates: true
+  require_gene_symbol_column: true
+  reject_null_observation_ids: true
+  reject_null_expression_values: true
+
+logging:
+  level: INFO
+  write_audit_report: true
+  audit_report_filename: extraction_audit.json

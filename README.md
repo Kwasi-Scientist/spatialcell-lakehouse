@@ -488,7 +488,7 @@ PySpark and Airflow components are planned for subsequent development phases.
 
 ## License
 
-A license has not yet been selected. Consider adding an MIT License if the project is intended to be openly reusable.
+A license has not yet been selected.
 
 ## Acknowledgments
 
